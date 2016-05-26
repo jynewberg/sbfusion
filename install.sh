@@ -190,9 +190,6 @@ chmod 744 "$execdir"/defineNewTranscripts.py
 cp "$initpath"/python/fastqstream.py "$execdir"
 chmod 744 "$execdir"/fastqstream.py
 
-cp "$initpath"/python/indexGtf.py "$execdir"
-chmod 744 "$execdir"/indexGtf.py
-
 cp "$initpath"/python/sam2fastq.py "$execdir"
 chmod 744 "$execdir"/sam2fastq.py
 
