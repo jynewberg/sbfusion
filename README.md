@@ -22,7 +22,7 @@ The SB fusion workflow consists of two parts:
 - utilization of these sites with insertions detected by SBCaptureSeq to define fusion transcripts. Then merging these novel transcripts into GTF files that can be used in cufflinks.
 
 ##Trying out the code
-You can download a toy dataset from [Figshare](https://figshare.com/s/92e63278c7afd9c5bd2a). Make sure to unzip the file once you've gotten it (so the filename ends in fastq). 
+You can download a toy dataset from [Figshare](https://figshare.com/s/6338a2d4211140fe0c80). Make sure to unzip the file once you've gotten it (so the filename ends in fastq). 
 
 ###Running the first step (fusion detection)
 You can run the first part of the sbfusion workflow as follows:
