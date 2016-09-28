@@ -122,7 +122,7 @@ while True:
     if 16 in flags:
       sequence=tag2compliment(sequence)
       phred=phred[::-1]
-    sys.stdout.write("@%s\n%s\n%s\n%s\n" %(header,sequeunce,_,phred))
+    sys.stdout.write("@%s\n%s\n%s\n%s\n" %(header,sequence,_,phred))
     sys.stderr.write("@%s\t%s\n" %(header,read_side))
 
   if command=='S':
