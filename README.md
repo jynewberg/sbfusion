@@ -53,8 +53,3 @@ This takes about a minute to run.
 This will produce a file, ```fusionTranscripts.gtf```, in your current working directory that contains transcript annotations in the gtf format. 
 
 Note that in the ```data``` folder that accompanies this readme there are two files beginning in "REFERENCE_" that you can view to make sure your outputs match what is expected.
-
-## Update log
-###2016-09-27
-- Uploaded correct version of cigar.py. The old version of cigar.py did account for the fact that bowtie2 reports reverse-compliment sequences for reads that map to negative strand. (Note that the updated/correct version of cigar.py was used to produce results used in the paper.)
-- Example files (located in the data directory) have been uploaded accordingly.
