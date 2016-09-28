@@ -17,6 +17,21 @@
 
 import os,sys
 
+# Standalone copies of library functions
+## Get the reverse compliment of a sequence
+def tag2compliment(tag):
+  rosetta={'A':'T','a':'t','C':'G','c':'g','G':'C','g':'c','T':'A','t':'a','N':'N','n':'n'}
+  return ''.join([rosetta[i] for i in tag[::-1]])
+
+
+## Reduce sam flags to principal values
+def sam_flag(x):
+  binstr=bin(x)[2:][::-1]
+  values=[2**i for i in xrange(len(binstr)) if binstr[i]=='1']
+  return values
+
+
+
 if len(sys.argv)==1:
   doc='''cigar usage:
   cigar M input.sam > aligned.fastq
@@ -32,21 +47,23 @@ else:
   if os.path.exists(sys.argv[-1])==False:
     sys.stderr.write("Check input file\n")
     sys.exit(1)
-  fid = open(sys.argv[-1],'rbU')
+  fid = open(sys.argv[-1],"rbU")
 
 while True:
   line=fid.readline().strip('\n')
   if line=='':break
   if line[0]=='@':continue
 
-  row = line.split('\t')
-  header = row[0]
-  sequence = row[9]
-  _ = '+'
-  phred = row[10]
-  cigar = row[5]
+  row=line.split('\t')
+  header=row[0]
+  sequence=row[9]
+  _='+'
+  phred=row[10]
+  cigar=row[5]
 
   if cigar=='*':continue
+
+  flags=sam_flag(int(row[1]))
 
   features,sequences,phreds,value,position = [],[],[],'',0
   st,en=0,0
@@ -98,14 +115,24 @@ while True:
 
   if command=='M':
     if len(index['M'])<20:continue
-    read_side='left'
-    if (argmaxes['S']<argmaxes['M'])&(maxes['S']>19):read_side='right'
-    sys.stdout.write('@%s\n%s\n%s\n%s\n' %(header,index['M'],_,index2['M']))
-    sys.stderr.write('@%s\t%s\n' %(header,read_side))
+    read_side="left"
+    if (argmaxes['S']<argmaxes['M'])&(maxes['S']>19):read_side="right"
+    sequence=index['M']
+    phred=index2['M']
+    if 16 in flags:
+      sequence=tag2compliment(sequence)
+      phred=phred[::-1]
+    sys.stdout.write("@%s\n%s\n%s\n%s\n" %(header,sequeunce,_,phred))
+    sys.stderr.write("@%s\t%s\n" %(header,read_side))
 
   if command=='S':
     if len(index['S'])<20:continue
-    read_side='left'
-    if (argmaxes['M']<argmaxes['S'])&(maxes['M']>19):read_side='right'
-    sys.stdout.write('@%s\n%s\n%s\n%s\n' %(header,index['S'],_,index2['S']))
-    sys.stderr.write('@%s\t%s\n' %(header,read_side))
+    read_side="left"
+    if (argmaxes['M']<argmaxes['S'])&(maxes['M']>19):read_side="right"
+    sequence=index['S']
+    phred=index2['S']
+    if 16 in flags:
+      sequence=tag2compliment(sequence)
+      phred=phred[::-1]
+    sys.stdout.write("@%s\n%s\n%s\n%s\n" %(header,sequence,_,phred))
+    sys.stderr.write("@%s\t%s\n" %(header,read_side))
